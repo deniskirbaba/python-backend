@@ -1,14 +1,17 @@
+from typing import Any
+from typing import Awaitable
+from typing import Callable
+
 import uvicorn
-from typing import Any, Awaitable, Callable
 
 
 async def application(
     scope: dict[str, Any],
     receive: Callable[[], Awaitable[dict[str, Any]]],
-    send: Callable[[dict[str, Any]], Awaitable[None]]
+    send: Callable[[dict[str, Any]], Awaitable[None]],
 ) -> None:
-    assert scope['type'] == 'http'
-    
+    assert scope["type"] == "http"
+
     await send(
         {
             "type": "http.response.start",
@@ -18,12 +21,8 @@ async def application(
             ],
         }
     )
-    await send(
-        {
-            "type": "http.response.body",
-            "body": b"Hello, world!"
-        }
-    )
+    await send({"type": "http.response.body", "body": b"Hello, world!"})
+
 
 if __name__ == "__main__":
     uvicorn.run("asgi_test:application", port=8000, log_level="info")

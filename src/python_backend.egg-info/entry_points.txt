@@ -1,3 +1,0 @@
-[console_scripts]
-run-tests = tests.test_hw_1:main
-start-math-server = math_api.asgi_math_server:main
