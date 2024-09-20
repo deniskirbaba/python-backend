@@ -51,22 +51,22 @@ def test_factorial(query: dict[str, Any], status_code: int):
         assert "result" in response.json()
 
 
-# @pytest.mark.parametrize(
-#     ("params", "status_code"),
-#     [
-#         ("/lol", HTTPStatus.UNPROCESSABLE_ENTITY),
-#         ("/-1", HTTPStatus.BAD_REQUEST),
-#         ("/0", HTTPStatus.OK),
-#         ("/1", HTTPStatus.OK),
-#         ("/10", HTTPStatus.OK),
-#     ],
-# )
-# def test_fibonacci(params: str, status_code: int):
-#     response = requests.get(BASE_URL + "/fibonacci" + params)
+@pytest.mark.parametrize(
+    ("params", "status_code"),
+    [
+        ("/lol", HTTPStatus.UNPROCESSABLE_ENTITY),
+        ("/-1", HTTPStatus.BAD_REQUEST),
+        ("/0", HTTPStatus.OK),
+        ("/1", HTTPStatus.OK),
+        ("/10", HTTPStatus.OK),
+    ],
+)
+def test_fibonacci(params: str, status_code: int):
+    response = requests.get(BASE_URL + "/fibonacci" + params)
 
-#     assert response.status_code == status_code
-#     if status_code == HTTPStatus.OK:
-#         assert "result" in response.json()
+    assert response.status_code == status_code
+    if status_code == HTTPStatus.OK:
+        assert "result" in response.json()
 
 
 # @pytest.mark.parametrize(

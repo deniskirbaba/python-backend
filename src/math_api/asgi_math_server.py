@@ -13,43 +13,66 @@ from urllib.parse import parse_qs
 
 import uvicorn
 
+MAX_FACTORIAL_N = 1e3
+MAX_FIBONACCI_N = 1e4
 
-def represents_int(param: List) -> bool:
+
+def validate_int_param(param: List, param_name: str) -> Tuple[Optional[int], HTTPStatus, Optional[dict[str, str]]]:
     if len(param) != 1:
-        return False
+        return None, HTTPStatus.UNPROCESSABLE_ENTITY, {"error": f"Missing parameter '{param_name}'"}
     try:
-        int(param[0])
-        return True
+        n = int(param[0])
     except (ValueError, TypeError):
-        return False
-
-
-def handle_factorial_request(query: str) -> Tuple[HTTPStatus, Optional[Union[dict[str, int], dict[str, str]]]]:
-    query_params = parse_qs(query)
-    n = query_params.get("n")
-
-    # Validation
-    if n is None:
-        return (HTTPStatus.UNPROCESSABLE_ENTITY, {"error": "Missing parameter 'n'"})
-    if not represents_int(n):
-        return (HTTPStatus.UNPROCESSABLE_ENTITY, {"error": "'n' must be an integer"})
-    n = int(n[0])
+        return None, HTTPStatus.UNPROCESSABLE_ENTITY, {"error": f"'{param_name}' must be an integer"}
     if n < 0:
-        return (HTTPStatus.BAD_REQUEST, {"error": "'n' must be a non-negative integer"})
+        return None, HTTPStatus.BAD_REQUEST, {"error": f"'{param_name}' must be a non-negative integer"}
+    return n, HTTPStatus.OK, None
+
+
+def handle_factorial_request(query: str) -> Tuple[HTTPStatus, dict[str, Union[int, str]]]:
+    query_params = parse_qs(query)
+    n, status, error_response = validate_int_param(query_params.get("n", []), "n")
+
+    if error_response:
+        return status, error_response
+
+    if n > MAX_FACTORIAL_N:
+        return HTTPStatus.BAD_REQUEST, {"error": f"'n' must be less than or equal to {MAX_FACTORIAL_N}"}
 
     try:
         result = math_factorial(n)
-        return (HTTPStatus.OK, {"result": result})
-    except ValueError:
-        return (HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal server error during factorial computation"})
+        return HTTPStatus.OK, {"result": result}
+    except Exception as e:
+        return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": f"Internal error during factorial computation: {str(e)}"}
 
 
-def handle_fibonacci_request():
-    pass
+def fibonacci(n: int) -> int:
+    if n == 0:
+        return 0
+    if n == 1:
+        return 1
+
+    a, b = 0, 1
+    for _ in range(2, n + 1):
+        a, b = b, a + b
+
+    return b
 
 
-def handle_mean_request():
-    pass
+def handle_fibonacci_request(path_params: List[str]) -> Tuple[HTTPStatus, dict[str, Union[int, str]]]:
+    n, status, error_response = validate_int_param(path_params, "n")
+
+    if error_response:
+        return status, error_response
+
+    if n > MAX_FIBONACCI_N:
+        return HTTPStatus.BAD_REQUEST, {"error": f"'n' must be less than or equal to {MAX_FIBONACCI_N}"}
+
+    try:
+        result = fibonacci(n)
+        return HTTPStatus.OK, {"result": result}
+    except Exception as e:
+        return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": f"Internal error during Fibonacci computation: {str(e)}"}
 
 
 async def application(
@@ -66,16 +89,14 @@ async def application(
     status = HTTPStatus.NOT_FOUND
     response_body = {"error": "Not Found"}
 
-    # Routing logic
     if method == HTTPMethod.GET:
         if path == "/factorial":
             status, response_body = handle_factorial_request(query_string)
-        elif path == "/fibonacci":
-            status, response_body = HTTPStatus.NOT_IMPLEMENTED, {"error": "Not implemented"}
-        elif path == "/mean":
-            status, response_body = HTTPStatus.NOT_IMPLEMENTED, {"error": "Not implemented"}
-    else:
-        response_body = {"error": f"Method {method} not allowed"}
+        elif path.startswith("/fibonacci/"):
+            path_params = path.split("/")[2:]
+            status, response_body = handle_fibonacci_request(path_params)
+        else:
+            response_body = {"error": "Route not found"}
 
     await send(
         {"type": "http.response.start", "status": status.value, "headers": [[b"content-type", b"application/json"]]}
