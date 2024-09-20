@@ -5,24 +5,27 @@ from math import factorial as math_factorial
 from typing import Any
 from typing import Awaitable
 from typing import Callable
+from typing import List
 from typing import Optional
 from typing import Tuple
 from typing import Union
+from urllib.parse import parse_qs
 
 import uvicorn
 
 
-# Utility function to check if a string represents an integer
-def represents_int(s: Any) -> bool:
+def represents_int(param: List) -> bool:
+    if len(param) != 1:
+        return False
     try:
-        int(s)
+        int(param[0])
         return True
     except (ValueError, TypeError):
         return False
 
 
 def handle_factorial_request(query: str) -> Tuple[HTTPStatus, Optional[Union[dict[str, int], dict[str, str]]]]:
-    query_params = {param.split("=")[0]: param.split("=")[1] for param in query.split("&") if "=" in param}
+    query_params = parse_qs(query)
     n = query_params.get("n")
 
     # Validation
@@ -30,7 +33,7 @@ def handle_factorial_request(query: str) -> Tuple[HTTPStatus, Optional[Union[dic
         return (HTTPStatus.UNPROCESSABLE_ENTITY, {"error": "Missing parameter 'n'"})
     if not represents_int(n):
         return (HTTPStatus.UNPROCESSABLE_ENTITY, {"error": "'n' must be an integer"})
-    n = int(n)
+    n = int(n[0])
     if n < 0:
         return (HTTPStatus.BAD_REQUEST, {"error": "'n' must be a non-negative integer"})
 
@@ -39,6 +42,14 @@ def handle_factorial_request(query: str) -> Tuple[HTTPStatus, Optional[Union[dic
         return (HTTPStatus.OK, {"result": result})
     except ValueError:
         return (HTTPStatus.INTERNAL_SERVER_ERROR, {"error": "Internal server error during factorial computation"})
+
+
+def handle_fibonacci_request():
+    pass
+
+
+def handle_mean_request():
+    pass
 
 
 async def application(
@@ -78,11 +89,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-def fibonacci():
-    pass
-
-
-def mean():
-    pass
