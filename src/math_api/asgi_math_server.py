@@ -1,4 +1,5 @@
 import json
+from functools import lru_cache
 from http import HTTPMethod
 from http import HTTPStatus
 from math import factorial as math_factorial
@@ -46,6 +47,7 @@ def handle_factorial_request(query: str) -> Tuple[HTTPStatus, dict[str, Union[in
         return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": f"Internal error during factorial computation: {str(e)}"}
 
 
+@lru_cache(maxsize=None)
 def fibonacci(n: int) -> int:
     if n == 0:
         return 0
@@ -75,6 +77,33 @@ def handle_fibonacci_request(path_params: List[str]) -> Tuple[HTTPStatus, dict[s
         return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": f"Internal error during Fibonacci computation: {str(e)}"}
 
 
+async def read_body(receive):
+    body = b""
+    more_body = True
+
+    while more_body:
+        message = await receive()
+        body += message.get("body", b"")
+        more_body = message.get("more_body", False)
+
+    return body
+
+
+def handle_mean_request(data: str) -> Tuple[HTTPStatus, dict[str, Union[float, str]]]:
+    try:
+        float_list = json.loads(data)
+        if not isinstance(float_list, list) or not all(isinstance(i, (float, int)) for i in float_list):
+            return HTTPStatus.UNPROCESSABLE_ENTITY, {"error": "Passed array does not contain a valid list of floats"}
+    except json.JSONDecodeError:
+        return HTTPStatus.UNPROCESSABLE_ENTITY, {"error": "Invalid type of passed array"}
+
+    if len(float_list) == 0:
+        return HTTPStatus.BAD_REQUEST, {"error": "Passed array should be non-empty"}
+
+    result = sum(float_list) / len(float_list)
+    return HTTPStatus.OK, {"result": result}
+
+
 async def application(
     scope: dict[str, Any],
     receive: Callable[[], Awaitable[dict[str, Any]]],
@@ -95,8 +124,9 @@ async def application(
         elif path.startswith("/fibonacci/"):
             path_params = path.split("/")[2:]
             status, response_body = handle_fibonacci_request(path_params)
-        else:
-            response_body = {"error": "Route not found"}
+        elif path == "/mean":
+            body = await read_body(receive)
+            status, response_body = handle_mean_request(body.decode("utf-8"))
 
     await send(
         {"type": "http.response.start", "status": status.value, "headers": [[b"content-type", b"application/json"]]}

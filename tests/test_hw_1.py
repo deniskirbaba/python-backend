@@ -69,19 +69,19 @@ def test_fibonacci(params: str, status_code: int):
         assert "result" in response.json()
 
 
-# @pytest.mark.parametrize(
-#     ("json", "status_code"),
-#     [
-#         (None, HTTPStatus.UNPROCESSABLE_ENTITY),
-#         ([], HTTPStatus.BAD_REQUEST),
-#         ([1, 2, 3], HTTPStatus.OK),
-#         ([1, 2.0, 3.0], HTTPStatus.OK),
-#         ([1.0, 2.0, 3.0], HTTPStatus.OK),
-#     ],
-# )
-# def test_mean(json: dict[str, Any] | None, status_code: int):
-#     response = requests.get(BASE_URL + "/mean", json=json)
+@pytest.mark.parametrize(
+    ("json", "status_code"),
+    [
+        (None, HTTPStatus.UNPROCESSABLE_ENTITY),
+        ([], HTTPStatus.BAD_REQUEST),
+        ([1, 2, 3], HTTPStatus.OK),
+        ([1, 2.0, 3.0], HTTPStatus.OK),
+        ([1.0, 2.0, 3.0], HTTPStatus.OK),
+    ],
+)
+def test_mean(json: dict[str, Any] | None, status_code: int):
+    response = requests.get(BASE_URL + "/mean", json=json)
 
-#     assert response.status_code == status_code
-#     if status_code == HTTPStatus.OK:
-#         assert "result" in response.json()
+    assert response.status_code == status_code
+    if status_code == HTTPStatus.OK:
+        assert "result" in response.json()
