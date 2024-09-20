@@ -1,0 +1,64 @@
+[project]
+name = "python-backend"
+version = "1.0"
+description = "Python Backend course ITMO"
+readme = "README.md"
+classifiers = ["Programming Language :: Python"]
+requires-python = ">=3.12"
+dependencies = [
+    "requests>=2.32.3",
+    "uvicorn>=0.20.0"
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.4.4"
+]
+dev = [
+    'pre-commit',
+    'black',
+    'isort',
+    'pylint'
+]
+
+[project.scripts]
+start-math-server = "math_api.asgi_math_server:main"
+
+[build-system]
+requires = ["setuptools>=75.1.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.black]
+line-length = 120
+target-version = ['py312']
+include = '\.pyi?$|\.ipynbi?$'
+
+[tool.isort]
+profile = 'black'
+line_length = 120
+ensure_newline_before_comments = true
+force_single_line = true
+
+[tool.docformatter]
+recursive = true
+wrap-summaries = 0
+wrap-descriptions = 0
+blank = true
+black = true
+pre-summary-newline = true
+
+[tool.yamlfix]
+line_length = 120
+explicit_start = false
+sequence_style = 'keep_style'
+whitelines = 1
+section_whitelines = 1
+
+[tool.pylint.format]
+max-line-length = 120
+max-args = 10
+
+[tool.pylint.messages_control]
+disable = [
+  'missing-docstring',
+]
