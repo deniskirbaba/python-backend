@@ -1,7 +1,5 @@
 # Python Backend
 
-ITMO AI Talent Hub Python Backend Course (Fall 2024)
-
 ## 1 - Основы сети и Python Backend
 
 ### Задача
