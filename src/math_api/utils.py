@@ -1,5 +1,8 @@
-from typing import List, Tuple, Optional
 from http import HTTPStatus
+from typing import List
+from typing import Optional
+from typing import Tuple
+
 
 async def read_body(receive):
     body = b""
@@ -9,6 +12,7 @@ async def read_body(receive):
         body += message.get("body", b"")
         more_body = message.get("more_body", False)
     return body
+
 
 def validate_int_param(param: List, param_name: str) -> Tuple[Optional[int], HTTPStatus, Optional[dict[str, str]]]:
     if len(param) != 1:

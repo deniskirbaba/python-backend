@@ -1,10 +1,17 @@
 import json
-import uvicorn
-from http import HTTPStatus
 from http import HTTPMethod
-from typing import Any, Awaitable, Callable
-from math_api.routes import handle_factorial_request, handle_fibonacci_request, handle_mean_request
+from http import HTTPStatus
+from typing import Any
+from typing import Awaitable
+from typing import Callable
+
+import uvicorn
+
+from math_api.routes import handle_factorial_request
+from math_api.routes import handle_fibonacci_request
+from math_api.routes import handle_mean_request
 from math_api.utils import read_body
+
 
 async def application(
     scope: dict[str, Any],

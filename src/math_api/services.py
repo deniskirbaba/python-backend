@@ -1,10 +1,11 @@
-from math import factorial as math_factorial
-from http import HTTPStatus
-from functools import lru_cache
 import json
+from functools import lru_cache
+from http import HTTPStatus
+from math import factorial as math_factorial
 
 MAX_FACTORIAL_N = 1e3
 MAX_FIBONACCI_N = 1e4
+
 
 def factorial_service(n: int):
     if n > MAX_FACTORIAL_N:
@@ -14,6 +15,7 @@ def factorial_service(n: int):
         return HTTPStatus.OK, {"result": result}
     except Exception as e:
         return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": f"Internal error during factorial computation: {str(e)}"}
+
 
 @lru_cache(maxsize=None)
 def fibonacci_service(n: int):
@@ -32,6 +34,7 @@ def fibonacci_service(n: int):
         return HTTPStatus.OK, {"result": b}
     except Exception as e:
         return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": f"Internal error during Fibonacci computation: {str(e)}"}
+
 
 def mean_service(data: str):
     try:
