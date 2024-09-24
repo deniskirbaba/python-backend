@@ -22,7 +22,7 @@ dev = [
 ]
 
 [project.scripts]
-start-math-server = "math_api.asgi_math_server:main"
+start-math-server = "math_api.app:main"
 
 [build-system]
 requires = ["setuptools>=75.1.0"]

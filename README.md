@@ -31,13 +31,29 @@
 
 - [Спецификация ASGI](https://asgi.readthedocs.io/en/latest/specs/www.html#http)
 
-- Пример кода API на FastAPI: [math_example.py](/lecture_1/math_example.py)
+- Пример кода API на FastAPI: [fast_api_server.py](/learning/week1/fast_api_server.py)
 
 - Тесты для проверки: [test_hw_1.py](/tests/test_hw_1.py)
 
 ### Решение
 
-Реализация сервера находится в файле: [asgi_math_server.py](/src/math_api/asgi_math_server.py).
+#### Структура
+
+```bash
+├── pyproject.toml
+├── src
+│   ├── math_api
+│   │   ├── app.py            # ASGI application (main entry point)
+│   │   ├── routes.py         # Handlers and routes for the API
+│   │   ├── utils.py          # Validation and request body parsing
+│   │   ├── services.py       # Factorial, Fibonacci, mean calculations
+│   │   └── __init__.py       # For making Python package
+
+│   └── python_backend.egg-info
+└── tests
+    ├── __init__.py
+    └── test_hw1.py
+```
 
 #### Инструкции по установке и запуску
 
@@ -61,7 +77,7 @@
 
 1. **Запуск сервера**
 
-   Чтобы запустить сервер, используйте следующую команду:
+   Чтобы запустить сервер на `localhost:8000`, используйте следующую команду:
 
    ```bash
    start-math-server
