@@ -1,0 +1,7 @@
+# Python version requirement
+python_version >= "3.12"
+
+# Dependencies
+requests>=2.32.3
+uvicorn>=0.20.0
+pytest>=7.4.4

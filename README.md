@@ -31,28 +31,27 @@
 
 - [Спецификация ASGI](https://asgi.readthedocs.io/en/latest/specs/www.html#http)
 
-- Пример кода API на FastAPI: [fast_api_server.py](/learning/week1/fast_api_server.py)
+- Пример кода API на FastAPI: [fast_api_server.py](/01_network/learning-scripts/fast_api_server.py)
 
-- Тесты для проверки: [test_hw_1.py](/tests/test_hw_1.py)
+- Тесты для проверки: [test.py](/01_network/tests/test.py)
 
 ### Решение
 
 #### Структура
 
 ```bash
-├── pyproject.toml
-├── src
-│   ├── math_api
-│   │   ├── app.py            # ASGI application (main entry point)
-│   │   ├── routes.py         # Handlers and routes for the API
-│   │   ├── utils.py          # Validation and request body parsing
-│   │   ├── services.py       # Factorial, Fibonacci, mean calculations
-│   │   └── __init__.py       # For making Python package
+└── 01_network
+    ├── math-api
+    │   ├── __init__.py
+    │   ├── app.py            # ASGI application (main entry point)
+    │   ├── routes.py         # Handlers and routes for the API
+    │   ├── utils.py          # Validation and request body parsing
+    │   ├── services.py       # Factorial, Fibonacci, mean calculations
+    ├── tests
+    |   ├── __init__.py
+    |   └── test.py
+    └── requirements.txt
 
-│   └── python_backend.egg-info
-└── tests
-    ├── __init__.py
-    └── test_hw1.py
 ```
 
 #### Инструкции по установке и запуску
@@ -63,24 +62,31 @@
 
    ```bash
    git clone https://github.com/deniskirbaba/python-backend.git
-   cd python-backend
+   cd python-backend/01_network
    ```
 
-1. **Установка зависимостей и сборка**
+2. **Установка зависимостей**
 
-   Для запуска требуется `python` версии выше `3.12`.
-   Все остальные необходимые зависимости и инструкции по сборке определены в файле `pyproject.toml`. В качестве ASGI-сервера используется `uvicorn`. Для установки модуля и его зависимостей выполните следующую команду:
+    Зависимости прописаны в [requirements.txt](/01_network/requirements.txt).  
+   Для запуска требуется `python` версии выше `3.12`.  
+   В качестве ASGI-сервера используется `uvicorn`. Для установки зависимостей выполните следующую команду:
 
    ```bash
-   pip install .
+   pip install -r requirements.txt
    ```
 
-1. **Запуск сервера**
+3. **Запуск сервера**
 
    Чтобы запустить сервер на `localhost:8000`, используйте следующую команду:
 
    ```bash
-   start-math-server
+   uvicorn math-api.app:app --port 8000
    ```
 
-   Эта команда запустит сервер, используя скрипт, описанный в файле `pyproject.toml`.
+4. **Запуск тестов**
+
+    Для запусков тестов отройте новый терминал, перейдите в папку репозитория `/python-backend/01_network` и выполните:
+
+    ```bash
+    pytest tests/test.py
+    ```

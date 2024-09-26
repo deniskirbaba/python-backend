@@ -1,19 +1,16 @@
 import json
-from http import HTTPMethod
-from http import HTTPStatus
-from typing import Any
-from typing import Awaitable
-from typing import Callable
+from http import HTTPMethod, HTTPStatus
+from typing import Any, Awaitable, Callable
 
-import uvicorn
-
-from math_api.routes import handle_factorial_request
-from math_api.routes import handle_fibonacci_request
-from math_api.routes import handle_mean_request
+from math_api.routes import (
+    handle_factorial_request,
+    handle_fibonacci_request,
+    handle_mean_request,
+)
 from math_api.utils import read_body
 
 
-async def application(
+async def app(
     scope: dict[str, Any],
     receive: Callable[[], Awaitable[dict[str, Any]]],
     send: Callable[[dict[str, Any]], Awaitable[None]],
@@ -38,14 +35,15 @@ async def application(
             status, response_body = handle_mean_request(body.decode("utf-8"))
 
     await send(
-        {"type": "http.response.start", "status": status.value, "headers": [[b"content-type", b"application/json"]]}
+        {
+            "type": "http.response.start",
+            "status": status.value,
+            "headers": [[b"content-type", b"application/json"]],
+        }
     )
-    await send({"type": "http.response.body", "body": json.dumps(response_body).encode("utf-8")})
-
-
-def main() -> None:
-    uvicorn.run("math_api.app:application", port=8000, log_level="info")
-
-
-if __name__ == "__main__":
-    main()
+    await send(
+        {
+            "type": "http.response.body",
+            "body": json.dumps(response_body).encode("utf-8"),
+        }
+    )

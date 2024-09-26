@@ -9,18 +9,24 @@ MAX_FIBONACCI_N = 1e4
 
 def factorial_service(n: int):
     if n > MAX_FACTORIAL_N:
-        return HTTPStatus.BAD_REQUEST, {"error": f"'n' must be less than or equal to {MAX_FACTORIAL_N}"}
+        return HTTPStatus.BAD_REQUEST, {
+            "error": f"'n' must be less than or equal to {MAX_FACTORIAL_N}"
+        }
     try:
         result = math_factorial(n)
         return HTTPStatus.OK, {"result": result}
     except Exception as e:
-        return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": f"Internal error during factorial computation: {str(e)}"}
+        return HTTPStatus.INTERNAL_SERVER_ERROR, {
+            "error": f"Internal error during factorial computation: {str(e)}"
+        }
 
 
 @lru_cache(maxsize=None)
 def fibonacci_service(n: int):
     if n > MAX_FIBONACCI_N:
-        return HTTPStatus.BAD_REQUEST, {"error": f"'n' must be less than or equal to {MAX_FIBONACCI_N}"}
+        return HTTPStatus.BAD_REQUEST, {
+            "error": f"'n' must be less than or equal to {MAX_FIBONACCI_N}"
+        }
     try:
         if n == 0:
             return HTTPStatus.OK, {"result": 0}
@@ -33,16 +39,24 @@ def fibonacci_service(n: int):
 
         return HTTPStatus.OK, {"result": b}
     except Exception as e:
-        return HTTPStatus.INTERNAL_SERVER_ERROR, {"error": f"Internal error during Fibonacci computation: {str(e)}"}
+        return HTTPStatus.INTERNAL_SERVER_ERROR, {
+            "error": f"Internal error during Fibonacci computation: {str(e)}"
+        }
 
 
 def mean_service(data: str):
     try:
         float_list = json.loads(data)
-        if not isinstance(float_list, list) or not all(isinstance(i, (float, int)) for i in float_list):
-            return HTTPStatus.UNPROCESSABLE_ENTITY, {"error": "Passed array does not contain a valid list of floats"}
+        if not isinstance(float_list, list) or not all(
+            isinstance(i, (float, int)) for i in float_list
+        ):
+            return HTTPStatus.UNPROCESSABLE_ENTITY, {
+                "error": "Passed array does not contain a valid list of floats"
+            }
     except json.JSONDecodeError:
-        return HTTPStatus.UNPROCESSABLE_ENTITY, {"error": "Invalid type of passed array"}
+        return HTTPStatus.UNPROCESSABLE_ENTITY, {
+            "error": "Invalid type of passed array"
+        }
 
     if len(float_list) == 0:
         return HTTPStatus.BAD_REQUEST, {"error": "Passed array should be non-empty"}

@@ -109,7 +109,11 @@ def test_mean(json: dict[str, Any] | None, status_code: int, expected_result: An
     [
         ({"Content-Type": "application/json"}, [1, 2, 3], HTTPStatus.OK),
         ({"Content-Type": "text/plain"}, [1, 2, 3], HTTPStatus.OK),
-        ({"Content-Type": "application/json"}, "not-a-list", HTTPStatus.UNPROCESSABLE_ENTITY),
+        (
+            {"Content-Type": "application/json"},
+            "not-a-list",
+            HTTPStatus.UNPROCESSABLE_ENTITY,
+        ),
     ],
 )
 def test_mean_content_type(headers: dict[str, str], json: Any, status_code: int):

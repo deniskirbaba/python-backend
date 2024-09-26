@@ -1,8 +1,6 @@
 from urllib.parse import parse_qs
 
-from math_api.services import factorial_service
-from math_api.services import fibonacci_service
-from math_api.services import mean_service
+from math_api.services import factorial_service, fibonacci_service, mean_service
 from math_api.utils import validate_int_param
 
 
