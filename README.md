@@ -41,7 +41,7 @@
 
 ```bash
 └── 01_network
-    ├── math-api
+    ├── math_api
     │   ├── __init__.py
     │   ├── app.py            # ASGI application (main entry point)
     │   ├── routes.py         # Handlers and routes for the API
@@ -80,7 +80,7 @@
    Чтобы запустить сервер на `localhost:8000`, используйте следующую команду:
 
    ```bash
-   uvicorn math-api.app:app --port 8000
+   uvicorn math_api.app:app --port 8000
    ```
 
 4. **Запуск тестов**
