@@ -1,5 +1,45 @@
 # Python Backend
 
+## Setup and Installation
+
+This project requires Python 3.12 and uses Poetry for package management and dependency resolution. You can install the project using either **Conda + Poetry** or **Poetry only**.
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/deniskirbaba/python-backend.git
+cd python-backend
+```
+
+### 2. Installation Options
+
+#### Conda + Poetry
+
+1. **Create and Activate Conda Environment:**
+
+   Ensure you have Conda installed, then:
+
+   ```bash
+   conda env create -f environment.yml
+   conda activate python-backend
+   ```
+
+2. **Install Project Dependencies:**
+
+   ```bash
+   poetry install
+   ```
+
+#### Poetry Only
+
+1. **Install Project Dependencies:**
+
+   Ensure you have Python 3.12 and Poetry installed, then:
+
+   ```bash
+   poetry install
+   ```
+
 ## 1 - Основы сети и Python Backend
 
 ### Задача
@@ -31,62 +71,34 @@
 
 - [Спецификация ASGI](https://asgi.readthedocs.io/en/latest/specs/www.html#http)
 
-- Пример кода API на FastAPI: [fast_api_server.py](/01_network/learning-scripts/fast_api_server.py)
+- Пример кода API на FastAPI: [fast_api_server.py](/lecture_1/learning-scripts/fast_api_server.py)
 
-- Тесты для проверки: [test.py](/01_network/tests/test.py)
+- Тесты для проверки: [test.py](/tests/test_math_api.py)
 
 ### Решение
 
 #### Структура
 
 ```bash
-└── 01_network
-    ├── math_api
-    │   ├── __init__.py
-    │   ├── app.py            # ASGI application (main entry point)
-    │   ├── routes.py         # Handlers and routes for the API
-    │   ├── utils.py          # Validation and request body parsing
-    │   ├── services.py       # Factorial, Fibonacci, mean calculations
-    ├── tests
-    |   ├── __init__.py
-    |   └── test.py
-    └── requirements.txt
-
+└── lecture_1
+   └── math_api
+      ├── __init__.py
+      ├── app.py            # ASGI application (main entry point)
+      ├── routes.py         # Handlers and routes for the API
+      ├── utils.py          # Validation and request body parsing
+      └── services.py       # Factorial, Fibonacci, mean calculations
 ```
 
-#### Инструкции по установке и запуску
-
-1. **Клонирование репозитория**
-
-   Для начала клонируйте репозиторий и перейдите в директорию проекта:
-
-   ```bash
-   git clone https://github.com/deniskirbaba/python-backend.git
-   cd python-backend/01_network
-   ```
-
-2. **Установка зависимостей**
-
-    Зависимости прописаны в [requirements.txt](/01_network/requirements.txt).  
-   Для запуска требуется `python` версии выше `3.12`.  
-   В качестве ASGI-сервера используется `uvicorn`. Для установки зависимостей выполните следующую команду:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Запуск сервера**
+#### Запуск сервера
 
    Чтобы запустить сервер на `localhost:8000`, используйте следующую команду:
 
    ```bash
-   uvicorn math_api.app:app --port 8000
+   uvicorn lecture_1.math_api.app:app --port 8000
    ```
 
-4. **Запуск тестов**
+#### Запуск теста
 
-    Для запусков тестов отройте новый терминал, перейдите в папку репозитория `/python-backend/01_network` и выполните:
-
-    ```bash
-    pytest tests/test.py
-    ```
+```bash
+poetry run pytest -vv --showlocals --strict ./tests/test_math_api.py
+```
