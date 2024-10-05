@@ -16,7 +16,7 @@ async def main():
     tasks = [fetch_url(url) for url in urls]
 
     start = time.time()
-    results = await asyncio.gather(*tasks)  # Run tasks concurrently
+    _ = await asyncio.gather(*tasks)  # Run tasks concurrently
     print(f"All URLs fetched in {time.time() - start} seconds")
 
 
