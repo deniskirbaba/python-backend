@@ -1,7 +1,7 @@
 from urllib.parse import parse_qs
 
-from math_api.services import factorial_service, fibonacci_service, mean_service
-from math_api.utils import validate_int_param
+from lecture_1.math_api.services import factorial_service, fibonacci_service, mean_service
+from lecture_1.math_api.utils import validate_int_param
 
 
 def handle_factorial_request(query: str):

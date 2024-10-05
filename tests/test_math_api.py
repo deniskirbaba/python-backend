@@ -139,5 +139,5 @@ async def test_mean_content_type(headers: dict[str, str], json: Any, status_code
 @pytest.mark.asyncio
 async def test_unsupported_method():
     async with TestClient(app) as client:
-        response = await client.post("/factorial", params={"n": 5})
+        response = await client.post("/factorial", json={"n": 5})
     assert response.status_code == HTTPStatus.NOT_FOUND

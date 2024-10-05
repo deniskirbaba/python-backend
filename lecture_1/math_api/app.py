@@ -2,12 +2,12 @@ import json
 from http import HTTPMethod, HTTPStatus
 from typing import Any, Awaitable, Callable
 
-from math_api.routes import (
+from lecture_1.math_api.routes import (
     handle_factorial_request,
     handle_fibonacci_request,
     handle_mean_request,
 )
-from math_api.utils import read_body
+from lecture_1.math_api.utils import read_body
 
 
 async def app(
@@ -15,7 +15,6 @@ async def app(
     receive: Callable[[], Awaitable[dict[str, Any]]],
     send: Callable[[dict[str, Any]], Awaitable[None]],
 ) -> None:
-    assert scope["type"] == "http"
 
     method = scope.get("method")
     path = scope.get("path")
