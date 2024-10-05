@@ -15,30 +15,21 @@ cd python-backend
 
 #### Conda + Poetry
 
-1. **Create and Activate Conda Environment:**
+Ensure you have Conda installed, then:
 
-   Ensure you have Conda installed, then:
-
-   ```bash
-   conda env create -f environment.yml
-   conda activate python-backend
-   ```
-
-2. **Install Project Dependencies:**
-
-   ```bash
-   poetry install
-   ```
+```bash
+conda env create -f environment.yml
+conda activate python-backend
+poetry install
+```
 
 #### Poetry Only
 
-1. **Install Project Dependencies:**
+Ensure you have Python 3.12 and Poetry installed, then:
 
-   Ensure you have Python 3.12 and Poetry installed, then:
-
-   ```bash
-   poetry install
-   ```
+```bash
+poetry install
+```
 
 ## 1 - Основы сети и Python Backend
 
@@ -97,7 +88,7 @@ cd python-backend
    uvicorn lecture_1.math_api.app:app --port 8000
    ```
 
-#### Запуск теста
+#### Запуск тестов
 
 ```bash
 poetry run pytest -vv --showlocals --strict ./tests/test_math_api.py
