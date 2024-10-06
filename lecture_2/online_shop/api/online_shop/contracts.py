@@ -1,13 +1,13 @@
 from __future__ import annotations
 
+from pydantic import BaseModel, ConfigDict, NonNegativeFloat, PositiveInt
+
 from lecture_2.online_shop.store.models import (
     CartEntity,
     ItemEntity,
-    ItemInCartInfo,
     ItemInfo,
     PatchedItemInfo,
 )
-from pydantic import BaseModel, ConfigDict, NonNegativeFloat
 
 
 class ItemResponse(BaseModel):
@@ -45,13 +45,28 @@ class PatchedItemRequest(BaseModel):
         return PatchedItemInfo(name=self.name, price=self.price)
 
 
+class ItemInCartResponse(BaseModel):
+    id: int
+    name: str
+    quantity: PositiveInt
+    available: bool
+
+
 class CartResponse(BaseModel):
     id: int
-    items: dict[int, ItemInCartInfo] = {}
+    items: list[ItemInCartResponse] = []
     price: NonNegativeFloat
 
     @staticmethod
     def from_entity(entity: CartEntity) -> CartResponse:
-        return CartResponse(
-            id=entity.id, items=entity.info.items, price=entity.info.total_price
-        )
+        items = []
+        for item_id, item_info in entity.info.items.items():
+            items.append(
+                ItemInCartResponse(
+                    id=item_id,
+                    name=item_info.info.name,
+                    quantity=item_info.quantity,
+                    available=not item_info.info.deleted,
+                )
+            )
+        return CartResponse(id=entity.id, items=items, price=entity.info.total_price)

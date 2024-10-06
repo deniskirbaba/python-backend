@@ -36,7 +36,7 @@ def delete_item(id: int) -> None:
 
 
 def get_item(id: int) -> ItemEntity | None:
-    if id not in _items:
+    if id not in _items or _items[id].deleted:
         return None
     return ItemEntity(id=id, info=_items[id])
 
@@ -69,7 +69,7 @@ def put_item(id: int, info: ItemInfo) -> ItemEntity | None:
 
 
 def patch_item(id: int, info: PatchedItemInfo) -> ItemEntity | None:
-    if id not in _items:
+    if id not in _items or _items[id].deleted:
         return None
 
     if info.name is not None:
