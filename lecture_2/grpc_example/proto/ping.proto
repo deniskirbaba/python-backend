@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+// define the package name
+package grpc_example;
+
+// the request message
+message PingRequest {
+    string message = 1;
+}
+
+// the response message
+message PongResponce {
+    string message = 1;
+}
+
+// define a service
+service PingPong {
+    // define an rpc method
+    rpc Ping (PingRequest) returns (PongResponce);
+    rpc PingStream (stream PingRequest) returns (stream PongResponce);
+}
