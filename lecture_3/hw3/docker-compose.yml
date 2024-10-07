@@ -1,0 +1,18 @@
+services:
+  dev:
+    image: online_shop_dev:latest
+    build:
+      context: ../../
+      dockerfile: ./lecture_3/hw3/docker/online_shop/Dockerfile
+      target: dev
+    restart: always
+
+  local:
+    image: online_shop_local:latest
+    build:
+      context: ../../
+      dockerfile: ./lecture_3/hw3/docker/online_shop/Dockerfile
+      target: local
+    restart: always
+    ports: 
+      - 8080:8000
