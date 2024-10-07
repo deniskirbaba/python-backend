@@ -23,5 +23,4 @@ CMD ["bash", "-c", "while true; do sleep 1; done"]
 
 FROM base AS local
 
-# started at http://0.0.0.0:8000/ by FastAPI default
-CMD ["fastapi", "run", "./lecture_2/online_shop/main.py"]
+CMD ["uvicorn", "lecture_2.online_shop.main:app", "--host", "0.0.0.0", "--port", "8080"]
