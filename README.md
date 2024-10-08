@@ -222,3 +222,60 @@ poetry run fastapi run ./lecture_2/online_shop/main.py
 cd python-backend
 poetry run pytest -vv --showlocals --strict ./tests/test_online_shop_api.py
 ```
+
+## 3 - Docker & Monitoring
+
+### Task
+
+Integrate Docker with Prometheus and Grafana into any previously developed service (I chose the [online-shop](/lecture_2/online_shop/) service from HW-2).
+
+### Solution
+
+#### Structure
+
+```bash
+└── lecture_3
+    └── hw3
+        ├── docker
+        │   └── online_shop
+        │       └── Dockerfile
+        ├── docker-compose.yml
+        ├── grafana_dashboard
+        │   └── grafana_dashboard.json
+        ├── online_shop_api_ddoser.py
+        ├── requirements.txt
+        └── settings
+            └── prometheus
+                └── prometheus.yml
+```
+
+#### Startup
+
+To run the services, Docker is required. Build the services using Docker Compose:
+
+```bash
+cd python-backend/lecture_3/hw3
+docker compose build
+```
+
+Now, to start the services, run:
+
+```bash
+docker compose up -d
+```
+
+The online shop API service will be available at `http://0.0.0.0:8080` (`http://0.0.0.0:8080/docs` for Swagger documentation). To collect metrics, `prometheus-fastapi-instrumentator` has been integrated. Metrics can be accessed at `http://0.0.0.0:8080/metrics`.
+
+Prometheus will be available at: `http://localhost:9090`.
+
+Grafana will be available at: `http://0.0.0.0:3000`. The dashboard for monitoring can be imported from: [grafana_dashboard.json](/lecture_3/hw3/grafana_dashboard/grafana_dashboard.json).
+
+![Dashboard Example 1](/lecture_3/hw3/grafana_dashboard/dashboard_example_1.png)
+
+![Dashboard Example 2](/lecture_3/hw3/grafana_dashboard/dashboard_example_2.png)
+
+To stop the services, run:
+
+```bash
+docker compose down
+```
