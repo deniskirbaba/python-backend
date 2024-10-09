@@ -1,0 +1,21 @@
+global:
+  scrape_interval: 5s
+  evaluation_interval: 5s  # Evaluate rules every 5 seconds.
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# The online_shop API from HW-2
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: online_shop_local
+
+    # Many services, especially those written in Python (e.g., FastAPI, Flask) or Golang, 
+    # expose metrics in Prometheus-compatible format at the /metrics endpoint.
+    # So, as I understand the /metrics handler is already exists in my API (thanks to FastAPI)
+    metrics_path: /metrics  # Endpoint where metrics are exposed
+
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+
+    static_configs:
+      - targets:  # Lists the addresses of the services that Prometheus will scrape
+        - local:8080
