@@ -34,13 +34,11 @@ async def initialize(app: FastAPI):
         )
     )
 
-    app.state.user_service = user_service  # Attaching service to the app: The UserService instance is stored in the app.state (global app state).
+    app.state.user_service = user_service
 
     yield
 
 
-# This dependency fetches the UserService from the FastAPI app's state. 
-# It's used to inject the UserService into route handlers or other dependencies.
 def user_service(request: Request) -> UserService:
     return request.app.state.user_service
 

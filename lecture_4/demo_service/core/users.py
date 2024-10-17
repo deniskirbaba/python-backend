@@ -1,14 +1,14 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from enum import Enum
+from enum import StrEnum
 from typing import Callable
 
 from pydantic import BaseModel, SecretStr
 
 
-class UserRole(str, Enum):
-    USER: str = "user"
-    ADMIN: str = "admin"
+class UserRole(StrEnum):
+    USER = "user"
+    ADMIN = "admin"
 
 
 class UserInfo(BaseModel):

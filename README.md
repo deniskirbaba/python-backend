@@ -286,13 +286,40 @@ docker compose down
 
 Нужно расписать тесты для [demo_service](./lecture_4/demo_service/) из лекции 4. Сдача на основе процента
 покрытия кода тестами - требуется добиться 100% покрытия. Тесты для сервиса должны лежать в этой директории (`tests/lecture_4/hw`).  
-Команда, для запуска тестов:
 
-```sh
-poetry run pytest \
-    -vv \
-    --cov=lecture_4/demo_service \
-    ./tests/lecture_4/hw
+#### Solution
+
+Demo service structure:
+
+```bash
+lecture_4/demo_service
+├── api
+│   ├── contracts.py
+│   ├── __init__.py
+│   ├── main.py
+│   ├── users.py
+│   └── utils.py
+├── core
+│   ├── __init__.py
+│   └── users.py
+└── __init__.py
+```
+
+Tests structure:
+
+```bash
+tests/lecture_4/hw
+├── __init__.py
+├── test_api_users.py
+├── test_api_utils.py
+└── test_core_users.py
+```
+
+To run tests use this command:
+
+```bash
+cd python-backend
+poetry run pytest -vv --cov lecture_4/demo_service/ ./tests/lecture_4/hw/
 ```
 
 ### Task 2

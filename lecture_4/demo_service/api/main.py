@@ -3,7 +3,7 @@ from fastapi import FastAPI
 from lecture_4.demo_service.api import users, utils
 
 
-def create_app():
+def create_app() -> FastAPI:
     app = FastAPI(
         title="Testing Demo Service",
         lifespan=utils.initialize,
