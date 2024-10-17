@@ -1,0 +1,4 @@
+Method,Name,Error,Occurrences
+GET,//mean,HTTPError('400 Client Error: Bad Request for url: //mean'),119
+GET,//factorial?n=-1,HTTPError('400 Client Error: Bad Request for url: //factorial?n=-1'),4820
+GET,//fibonacci/-1,HTTPError('400 Client Error: Bad Request for url: //fibonacci/-1'),4832
