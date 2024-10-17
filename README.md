@@ -327,3 +327,40 @@ poetry run pytest -vv --cov lecture_4/demo_service/ ./tests/lecture_4/hw/
 Реализовать скрипт для нагрузочного тестирования приложения. Длительность не менее 10 минут (а лучше больше), требуется
 приложить в PR графики из Grafana с RPS и Success Rate (% успешных, то есть
 200-х запросов), а так же отчет формируемый инструментом, если таковой есть.
+
+#### Solution
+
+Для нагрузочного тестирования использовался `locust'. Скрипт для тестирования [locustfile.py](/lecture_4/load_test/locustfile.py).  
+В качестве сервиса использовался сервис [math_api](/lecture_1/math_api/) из 1 ДЗ. Сервис был поднят в Docker.  
+
+Графики тестирования:
+![](/lecture_4/load_test/metrics/metrics.png)
+
+![](/lecture_4/load_test/metrics/failures.png)
+
+Отчеты в папке [metrics](/lecture_4/load_test/metrics/).
+
+Structure:
+
+```bash
+lecture_4/load_test
+├── docker-compose.yml
+├── Dockerfile
+├── locustfile.py
+├── metrics
+└── requirements.txt
+```
+
+To run tests use this commands:
+
+```bash
+cd python-backend/lecture_4/load_test
+docker compose up -d  # run math_api service
+poetry run locust  # run locust 
+```
+
+To stop math_api service:
+
+```bash
+docker compose down  # stop math_api
+```
