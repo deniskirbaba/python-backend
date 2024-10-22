@@ -2,7 +2,6 @@ import signal
 import sys
 from concurrent.futures import ThreadPoolExecutor, wait
 from dataclasses import dataclass, field
-from os import name
 
 from confluent_kafka import Consumer
 
