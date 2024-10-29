@@ -1,0 +1,10 @@
+services:
+  math_api:
+    image: math_api:latest
+    build:
+      context: ../../
+      dockerfile: ./lecture_4/load_test/Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
+      
